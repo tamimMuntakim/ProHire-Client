@@ -1,3 +1,4 @@
 .active{
-    border: 2px dashed #F4BC5F;
+    border: 2px solid #F4BC5F;
+    border-radius: 16px;
 }
