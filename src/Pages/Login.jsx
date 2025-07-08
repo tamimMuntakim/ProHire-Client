@@ -5,11 +5,13 @@ import Lottie from 'lottie-react';
 import LoginLottie from "../assets/lotties/login_lottie.json"
 import { AuthContext } from '../Providers/AuthProvider';
 import Swal from 'sweetalert2';
+import axios from 'axios';
+import { baseURL } from '../Utilities/BaseURL';
 
 const Login = () => {
     const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const { logIn, googleSignIn } = useContext(AuthContext);
+    const { logIn, googleSignIn, setUser } = useContext(AuthContext);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -21,37 +23,24 @@ const Login = () => {
         const newUser = Object.fromEntries(formData.entries());
 
         logIn(newUser.email, newUser.password)
-            .then(() => {
-                Swal.fire({
-                    icon: "success",
-                    title: "Successfully Logged In!!!",
-                    timer: 1500
-                });
-                navigate(`${location.state ? location.state : "/"}`);
+            .then((result) => {
+                const user = result.user;
+                e.target.reset();
+                axios.get(`${baseURL}/users?email=${newUser?.email}`)
+                    .then((res) => {
+                        // console.log(res);
+                        const role = res.data.user.role;
+                        setUser({ ...user, role });
+                        // console.log(user);
+                        Swal.fire({
+                            icon: "success",
+                            title: "Successfully Logged In!!!",
+                            timer: 1500
+                        });
+                        navigate(`${location.state ? location.state : "/"}`);
+                    });
             })
             .catch((error) => {
-                setError(error.code);
-                Swal.fire({
-                    icon: "error",
-                    title: "Please try again !!",
-                    timer: 1500
-                });
-            })
-    }
-
-    const handleGoogleSignIn = () => {
-        setError("");
-        googleSignIn()
-            .then(() => {
-                Swal.fire({
-                    icon: "success",
-                    title: "Successfully Logged In!!!",
-                    timer: 1500
-                });
-                navigate(`${location.state ? location.state : "/"}`);
-            })
-            .catch((error) => {
-                setError(error.code);
                 Swal.fire({
                     icon: "error",
                     title: "Please try again !!",
@@ -59,6 +48,67 @@ const Login = () => {
                 });
             });
     }
+
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+            .then(async (result) => {
+                const user = result.user;
+                const email = user.email;
+                const name = user.displayName;
+                const photo = user.photoURL;
+                // 1. Check if user exists in DB
+                try {
+                    const res = await axios.get(`${baseURL}/users?email=${email}`);
+                    const dbUser = res.data.user;
+
+                    // 2. If user exists, setUser with role
+                    if (res.data.exists) {
+                        setUser({ ...user, role: dbUser.role });
+                        navigate("/");
+                        Swal.fire({
+                            icon: "success",
+                            title: "Successfully Registered and Logged In!!!",
+                            timer: 1500
+                        });
+                    } else {
+                        // 3. If user does not exist, assign default role (or redirect to role picker page)
+                        const newUser = {
+                            name: name,
+                            email: email,
+                            photo: photo,
+                            role: "applicant"
+                        };
+
+                        const postRes = await axios.post(`${baseURL}/users`, { ...newUser });
+                        console.log(postRes.data);
+                        if (postRes.data.insertedId) {
+                            setUser({ ...user, role: newUser.role });
+                            navigate("/");
+                            Swal.fire({
+                                icon: "success",
+                                title: "Successfully Registered and Logged In!!!",
+                                timer: 1500
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error("Google login error:", error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Please try again !!",
+                        timer: 1500
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log("Google sign-in error:", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Please try again !!",
+                    timer: 1500
+                });
+            });
+    };
 
     return (
         <div className="flex justify-center mt-8 items-center">
