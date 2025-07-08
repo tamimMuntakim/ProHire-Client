@@ -13,7 +13,7 @@ const Register = () => {
     const [passwordError, setPasswordError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    const { createUser, googleSignIn, updateInfo, setUser } = useContext(AuthContext);
+    const { createUser, googleSignIn, updateUser, setUser } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
@@ -34,64 +34,96 @@ const Register = () => {
         createUser(newUser.email, newUser.password)
             .then((result) => {
                 const user = result.user;
+                const updatedUser = { displayName: newUser.name, photoURL: newUser.photo };
+                updateUser(updatedUser).then(() => {
+                    const newUserDB = {
+                        name: newUser.name,
+                        email: newUser.email,
+                        role: newUser.role,
+                        photo: newUser.photo
+                    };
 
-                updateInfo(newUser.name, newUser.photo);
+                    // Axios post
+                    axios
+                        .post(`${baseURL}/users`, newUserDB)
+                        .then((res) => {
+                            if (res.data.insertedId) {
+                                setUser({ ...user, role: newUser.role });
+                                navigate("/");
+                            } else {
+                                setError("User creation failed in DB");
+                            }
+                        })
+                        .catch((err) => {
+                            console.error("DB error:", err.message);
+                            setError("Error saving user to database");
+                        });
+                });
+            })
+            .catch((err) => setError(err.message));
+    }
 
-                const newUserForDB = {
-                    name: newUser.name,
-                    email: newUser.email,
-                    role: newUser.role
-                };
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+            .then(async (result) => {
+                const user = result.user;
+                const email = user.email;
+                const name = user.displayName;
+                const photo = user.photoURL;
+                // 1. Check if user exists in DB
+                try {
+                    const res = await axios.get(`${baseURL}/users?email=${email}`);
+                    const dbUser = res.data.user;
 
-                axios.post(`${baseURL}/users`, newUserForDB)
-                    .then((res) => {
-                        if (res.data?.insertedId) {
+                    // 2. If user exists, setUser with role
+                    if (res.data.exists) {
+                        setUser({ ...user, role: dbUser.role });
+                        navigate("/");
+                        Swal.fire({
+                            icon: "success",
+                            title: "Successfully Registered and Logged In!!!",
+                            timer: 1500
+                        });
+                    } else {
+                        // 3. If user does not exist, assign default role (or redirect to role picker page)
+                        const newUser = {
+                            name: name,
+                            email: email,
+                            photo: photo,
+                            role: "applicant"
+                        };
+
+                        const postRes = await axios.post(`${baseURL}/users`, { ...newUser });
+                        console.log(postRes.data);
+                        if (postRes.data.insertedId) {
                             setUser({ ...user, role: newUser.role });
+                            navigate("/");
                             Swal.fire({
                                 icon: "success",
                                 title: "Successfully Registered and Logged In!!!",
                                 timer: 1500
                             });
-                            navigate("/");
-                        } else {
-                            setError("User creation failed in DB");
                         }
-                    })
-                    .catch((err) => {
-                        console.error("DB error:", err.message);
-                        setError("Error saving user to database");
+                    }
+                } catch (error) {
+                    console.error("Google login error:", error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Please try again !!",
+                        timer: 1500
                     });
+                }
             })
             .catch((error) => {
-                setError(error.code);
-                Swal.fire({
-                    icon: "error",
-                    title: "Please try again !!",
-                    timer: 1500
-                });
-            })
-    }
-
-    const handleGoogleSignIn = () => {
-        setError("");
-        googleSignIn()
-            .then(() => {
-                Swal.fire({
-                    icon: "success",
-                    title: "Successfully Logged In!!!",
-                    timer: 1500
-                });
-                navigate("/");
-            })
-            .catch((error) => {
-                setError(error.code);
+                console.log("Google sign-in error:", error);
                 Swal.fire({
                     icon: "error",
                     title: "Please try again !!",
                     timer: 1500
                 });
             });
-    }
+    };
+
     return (
         <div className="flex justify-center items-center mt-4">
             <div className="flex flex-col md:flex-row-reverse gap-2 md:gap-4 md:items-center">
