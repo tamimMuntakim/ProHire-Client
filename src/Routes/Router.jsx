@@ -10,6 +10,7 @@ import FindApplicants from "../Pages/FindApplicants";
 import AuthLayout from "../Layouts/AuthLayout";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
+import JobOrInternDetails from "../Pages/JobOrInternDetails";
 
 export const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
                 path: "/find-applicants",
                 element: <FindApplicants></FindApplicants>
             },
+            {
+                path: "/see-details",
+                element: <JobOrInternDetails></JobOrInternDetails>
+},
         ],
     },
     {
