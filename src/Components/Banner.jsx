@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const Banner = () => {
     return (
@@ -17,7 +18,7 @@ const Banner = () => {
                         <p className="mb-5 text-white">
                             Start your career journey—search by job title, company name, skills, or preferred location...
                         </p>
-                        <button className="btn btn-primary text-white">Get Started</button>
+                        <Link to={"/browse-listings"} className="btn btn-primary text-white">Get Started</Link>
                     </div>
                 </div>
             </div>
