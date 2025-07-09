@@ -28,10 +28,8 @@ const Login = () => {
                 e.target.reset();
                 axios.get(`${baseURL}/users?email=${newUser?.email}`)
                     .then((res) => {
-                        // console.log(res);
                         const role = res.data.user.role;
                         setUser({ ...user, role });
-                        // console.log(user);
                         Swal.fire({
                             icon: "success",
                             title: "Successfully Logged In!!!",
@@ -80,7 +78,6 @@ const Login = () => {
                         };
 
                         const postRes = await axios.post(`${baseURL}/users`, { ...newUser });
-                        console.log(postRes.data);
                         if (postRes.data.insertedId) {
                             setUser({ ...user, role: newUser.role });
                             navigate("/");
