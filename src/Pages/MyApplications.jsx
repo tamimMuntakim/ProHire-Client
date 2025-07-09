@@ -282,7 +282,7 @@ const MyApplications = () => {
                             </div>
                             <div className='flex flex-col gap-2 md:text-base w-full'>
                                 <label className="label font-semibold">Phone Number:</label>
-                                <input type="tel" defaultValue={selectedApplicationDetails.applicantPhoneNumber || 'N/A'} className="input input-bordered w-full cursor-not-allowed" readOnly />
+                                <input type="text" defaultValue={selectedApplicationDetails.phoneNumber || 'N/A'} className="input input-bordered w-full cursor-not-allowed" readOnly />
                             </div>
                             <div className='flex flex-col gap-2 md:text-base w-full'>
                                 <label className="label font-semibold">Resume/CV Link:</label>

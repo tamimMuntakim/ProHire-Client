@@ -49,9 +49,19 @@ const Register = () => {
                         .then((res) => {
                             if (res.data.insertedId) {
                                 setUser({ ...user, role: newUser.role });
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Successfully Registered and Logged In!!!",
+                                    timer: 1500
+                                });
                                 navigate("/");
                             } else {
                                 setError("User creation failed in DB");
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Please try again !!",
+                                    timer: 1500
+                                });
                             }
                         })
                         .catch((err) => {
@@ -78,12 +88,12 @@ const Register = () => {
                     // 2. If user exists, setUser with role
                     if (res.data.exists) {
                         setUser({ ...user, role: dbUser.role });
-                        navigate("/");
                         Swal.fire({
                             icon: "success",
                             title: "Successfully Registered and Logged In!!!",
                             timer: 1500
                         });
+                        navigate("/");
                     } else {
                         // 3. If user does not exist, assign default role (or redirect to role picker page)
                         const newUser = {
@@ -96,12 +106,12 @@ const Register = () => {
                         const postRes = await axios.post(`${baseURL}/users`, { ...newUser });
                         if (postRes.data.insertedId) {
                             setUser({ ...user, role: newUser.role });
-                            navigate("/");
                             Swal.fire({
                                 icon: "success",
                                 title: "Successfully Registered and Logged In!!!",
                                 timer: 1500
                             });
+                            navigate("/");
                         }
                     }
                 } catch (error) {
