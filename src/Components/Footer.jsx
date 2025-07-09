@@ -21,9 +21,9 @@ const Footer = () => {
             <nav>
                 <h6 className="footer-title">Social</h6>
                 <div className="grid grid-flow-col gap-4 md:gap-8">
-                    <a href="https://www.facebook.com/tamim.muntakim.02" target='_blank'><FaFacebookSquare className='w-4 h-4 md:w-6 md:h-6' /></a>
-                    <a href="https://www.linkedin.com/in/tamim-muntakim-51052625a/" target='_blank'><FaLinkedin className='w-4 h-4 md:w-6 md:h-6' /></a>
-                    <a href="https://github.com/tamimMuntakim" target='_blank'><FaGithub className='w-4 h-4 md:w-6 md:h-6' /></a>
+                    <a href="https://www.facebook.com" target='_blank'><FaFacebookSquare className='w-4 h-4 md:w-5 md:h-5' /></a>
+                    <a href="https://www.linkedin.com" target='_blank'><FaLinkedin className='w-4 h-4 md:w-5 md:h-5' /></a>
+                    <a href="https://github.com" target='_blank'><FaGithub className='w-4 h-4 md:w-5 md:h-5' /></a>
                 </div>
             </nav>
         </footer>

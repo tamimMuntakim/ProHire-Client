@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
                 element: <AddNewJob></AddNewJob>,
             },
             {
-                path: "/browse-jobs",
+                path: "/browse-listings",
                 element: <BrowseJobs></BrowseJobs>,
             },
             {
