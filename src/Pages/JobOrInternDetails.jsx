@@ -2,7 +2,7 @@ import React from 'react';
 // If you are NOT using react-router-dom, useLoaderData will likely not work directly from 'react-router'.
 // You'll need to get your job data differently, e.g., via useEffect and axios.
 // For this example, I'm keeping useLoaderData for illustration, assuming it resolves for you.
-import { useLoaderData } from 'react-router'; // <--- IMPORTANT: This typically comes from 'react-router-dom' for web apps
+import { Link, useLoaderData } from 'react-router'; // <--- IMPORTANT: This typically comes from 'react-router-dom' for web apps
 import { format, parseISO } from 'date-fns';
 import { FaBuilding, FaBriefcase, FaClock, FaCalendarAlt, FaPhoneAlt, FaAward, FaMoneyBill, FaUserPlus, FaInfoCircle } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
@@ -70,7 +70,9 @@ const JobOrInternDetails = () => {
           </div>
 
           <div className="card-actions justify-end mt-6">
-            <button className="btn btn-primary px-6">Apply Now</button>
+            <Link to={`/apply/${job?._id}`} className="btn btn-primary px-6">
+              Apply Now
+            </Link>
           </div>
         </div>
       </div>
