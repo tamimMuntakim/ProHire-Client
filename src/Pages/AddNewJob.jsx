@@ -1,13 +1,48 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from "../Providers/AuthProvider";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { baseURL } from '../Utilities/BaseURL';
 
 const AddNewJob = () => {
+
+    const { user } = useContext(AuthContext);
 
     const addNewJobSubmission = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const newJobOrIntern = Object.fromEntries(formData.entries());
-        newJobOrIntern.addedBy = ""
-        console.log(newJobOrIntern);
+        newJobOrIntern.addedBy = user?.email;
+        newJobOrIntern.startDate = new Date(newJobOrIntern.startDate);
+        newJobOrIntern.appliDeadline = new Date(newJobOrIntern.appliDeadline);
+        newJobOrIntern.addedAt = new Date();
+
+        axios.post(`${baseURL}/jobsAndInterns`, {
+            ...newJobOrIntern
+        })
+            .then(function (response) {
+                if (response?.data?.insertedId) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "New Marathon Details added successfully !!",
+                        timer: 1500
+                    });
+                    e.target.reset();
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Please try again later!!",
+                        timer: 1500
+                    });
+                }
+            })
+            .catch(function (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Please try again later!!",
+                    timer: 1500
+                });
+            });
     }
 
     return (
@@ -52,6 +87,21 @@ const AddNewJob = () => {
                     <div className='flex flex-col gap-2 md:text-base w-full'>
                         <label className="label font-semibold">Location<span className='text-red-400'>*</span> </label>
                         <input type="text" className="input w-full" placeholder="Enter Location" name="location" required />
+                    </div>
+
+                    <div className='flex flex-col gap-2 md:text-base w-full'>
+                        <label className="label font-semibold">Industry<span className='text-red-400'>*</span> </label>
+                        <select className="input w-full" placeholder="Select Industry Type" name="industry" required>
+                            <option value="">--Please choose an option--</option>
+                            <option value="Technology & Engineering">Technology & Engineering</option>
+                            <option value="Business & Management">Business & Management</option>
+                            <option value="Healthcare & Medicine">Healthcare & Medicine</option>
+                            <option value="Science & Research">Science & Research</option>
+                            <option value="Media & Creation">Media & Creation</option>
+                            <option value="Legal">Legal</option>
+                            <option value="Agriculture">Agriculture</option>
+                            <option value="Hybrid">Hybrid</option>
+                        </select>
                     </div>
 
                     <div className='flex flex-col gap-2 md:text-base w-full'>
@@ -128,7 +178,7 @@ const AddNewJob = () => {
                         <input type="text" className="input w-full" placeholder="Enter Contact Details" name="contact" required />
                     </div>
 
-                    <button type='submit' className='btn btn-primary w-full font-bold text-white mt-4 md:col-span-2'>Add</button>
+                    <button type='submit' className='btn btn-primary w-full font-bold text-white mt-4'>Add</button>
                 </form>
             </div>
         </div>
