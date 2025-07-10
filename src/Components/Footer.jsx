@@ -15,7 +15,7 @@ const Footer = () => {
                 <p className='text-slate-400'>Copyright © {new Date().getFullYear()} - All right reserved by ProHire Tech Ltd.</p>
                 <nav className="flex flex-col gap-1 md:gap-2">
                     <Link className="link link-hover" to="/">Home</Link>
-                    <Link className="link link-hover" to="/Marathons" >Marathons</Link>
+                    <Link className="link link-hover" to="/dashboard" >Dashboard</Link>
                 </nav>
             </aside>
             <nav>
