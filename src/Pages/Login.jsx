@@ -12,10 +12,8 @@ const Login = () => {
     const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const { logIn, googleSignIn, setUser } = useContext(AuthContext);
-
     const location = useLocation();
     const navigate = useNavigate();
-
     const handleLogin = (e) => {
         e.preventDefault();
         setError("");
@@ -46,7 +44,6 @@ const Login = () => {
                 });
             });
     }
-
     const handleGoogleSignIn = () => {
         googleSignIn()
             .then(async (result) => {
@@ -106,7 +103,6 @@ const Login = () => {
                 });
             });
     };
-
     return (
         <div className="flex justify-center mt-8 items-center">
             <div className="flex flex-col-reverse md:flex-row-reverse gap-2 md:gap-4 md:items-center">

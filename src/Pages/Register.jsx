@@ -12,14 +12,10 @@ const Register = () => {
     const [error, setError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-
     const { createUser, googleSignIn, updateUser, setUser } = useContext(AuthContext);
-
     const location = useLocation();
     const navigate = useNavigate();
-
     const passRegEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
     const handleRegister = (e) => {
         e.preventDefault();
         setError("");
@@ -73,7 +69,6 @@ const Register = () => {
             })
             .catch((err) => setError(err.message));
     }
-
     const handleGoogleSignIn = () => {
         googleSignIn()
             .then(async (result) => {
@@ -133,7 +128,6 @@ const Register = () => {
                 });
             });
     };
-
     return (
         <div className="flex justify-center items-center mt-4">
             <div className="flex flex-col md:flex-row-reverse gap-2 md:gap-4 md:items-center">
