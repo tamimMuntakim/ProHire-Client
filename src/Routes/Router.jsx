@@ -17,6 +17,8 @@ import { baseURL } from "../Utilities/BaseURL";
 import Loader from "../Components/Loader";
 import ApplyForJob from "../Pages/ApplyForJob";
 import MyApplications from "../Pages/MyApplications";
+import PrivateRoute from "../Providers/PrivateRoute";
+import DashboardLayout from "../Layouts/DashboardLayout";
 
 export const router = createBrowserRouter([
     {
@@ -26,22 +28,6 @@ export const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Home></Home>,
-            },
-            {
-                path: "/new-job",
-                element: <AddNewJob></AddNewJob>,
-            },
-            {
-                path: "/browse-listings",
-                element: <BrowseJobs></BrowseJobs>,
-            },
-            {
-                path: "/applied-jobs",
-                element: <MyApplications></MyApplications>,
-            },
-            {
-                path: "/find-applicants",
-                element: <FindApplicants></FindApplicants>
             },
             {
                 path: "/see-details/:id",
@@ -56,7 +42,9 @@ export const router = createBrowserRouter([
                         throw new Response("Not Found", { status: error.response?.status || 404, statusText: error.response?.statusText || "Details not found" });
                     }
                 },
-                element: <JobOrInternDetails></JobOrInternDetails>,
+                element: <PrivateRoute>
+                    <JobOrInternDetails></JobOrInternDetails>
+                </PrivateRoute>,
                 hydrateFallbackElement: <Loader></Loader>
             },
             {
@@ -72,10 +60,52 @@ export const router = createBrowserRouter([
                         throw new Response("Not Found", { status: error.response?.status || 404, statusText: error.response?.statusText || "Details not found" });
                     }
                 },
-                element: <ApplyForJob></ApplyForJob>,
+                element: <PrivateRoute>
+                    <ApplyForJob></ApplyForJob>
+                </PrivateRoute>,
                 hydrateFallbackElement: <Loader></Loader>
             },
         ],
+    },
+    {
+        path: "/dashboard",
+        element:
+            <PrivateRoute>
+                <DashboardLayout></DashboardLayout>
+            </PrivateRoute>,
+        children: [
+            {
+                index: true,
+                element: <div className="flex justify-center items-center">
+                    <h1 className="text-2xl md:text-4xl font-bold text-secondary my-8 md:my-20">Welcome to Dashboard!</h1>
+                </div>,
+            },
+            {
+                path: "/dashboard/browse-listings",
+                element: <PrivateRoute>
+                    <BrowseJobs></BrowseJobs>
+                </PrivateRoute>,
+            },
+            {
+                path: "/dashboard/new-job",
+                element: <PrivateRoute>
+                    <AddNewJob></AddNewJob>
+                </PrivateRoute>,
+            },
+            {
+                path: "/dashboard/applied-jobs",
+                element: <PrivateRoute>
+                    <MyApplications></MyApplications>
+                </PrivateRoute>,
+            },
+            {
+                path: "/dashboard/find-applicants",
+                element: <PrivateRoute>
+                    <FindApplicants></FindApplicants>
+                </PrivateRoute>,
+            },
+
+        ]
     },
     {
         path: "/auth",

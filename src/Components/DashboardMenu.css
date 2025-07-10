@@ -1,0 +1,9 @@
+.dash-menu-navs.active{
+    background-color: #f9ba33;
+    color: white;
+
+    font-weight: bold;
+}
+.dash-menu-navs{
+    color: white;
+}

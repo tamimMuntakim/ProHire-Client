@@ -62,10 +62,10 @@ const Login = () => {
                     // 2. If user exists, setUser with role
                     if (res.data.exists) {
                         setUser({ ...user, role: dbUser.role });
-                        navigate("/");
+                        navigate(`${location.state ? location.state : "/"}`);
                         Swal.fire({
                             icon: "success",
-                            title: "Successfully Registered and Logged In!!!",
+                            title: "Successfully Logged In!!!",
                             timer: 1500
                         });
                     } else {
@@ -80,10 +80,10 @@ const Login = () => {
                         const postRes = await axios.post(`${baseURL}/users`, { ...newUser });
                         if (postRes.data.insertedId) {
                             setUser({ ...user, role: newUser.role });
-                            navigate("/");
+                            navigate(`${location.state ? location.state : "/"}`);
                             Swal.fire({
                                 icon: "success",
-                                title: "Successfully Registered and Logged In!!!",
+                                title: "Successfully Logged In!!!",
                                 timer: 1500
                             });
                         }

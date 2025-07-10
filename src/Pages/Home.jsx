@@ -4,6 +4,7 @@ import FeaturedJobs from '../Components/FeaturedJobs';
 import FeaturedInternships from '../Components/FeaturedInternships';
 import axios from 'axios';
 import { baseURL } from '../Utilities/BaseURL';
+import Faq from '../Components/Faq';
 
 const Home = () => {
     const [allJobs, setAllJobs] = useState([]);
@@ -40,6 +41,9 @@ const Home = () => {
             </section>
             <section id="featured-interns" className='container mx-auto mt-6'>
                 <FeaturedInternships allInterns={allInterns}></FeaturedInternships>
+            </section>
+            <section id="feqs" className='container mx-auto mt-6 mb-4 md:mb-8'>
+                <Faq></Faq>
             </section>
         </>
     );
