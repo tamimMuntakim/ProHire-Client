@@ -1,7 +1,7 @@
 import Lottie from 'lottie-react';
 import React, { useContext, useState } from 'react';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import RegisterLottie from "../assets/lotties/register_lottie.json";
 import { AuthContext } from '../Providers/AuthProvider';
 import Swal from 'sweetalert2';
@@ -15,6 +15,7 @@ const Register = () => {
 
     const { createUser, googleSignIn, updateUser, setUser } = useContext(AuthContext);
 
+    const location = useLocation();
     const navigate = useNavigate();
 
     const passRegEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
@@ -54,7 +55,7 @@ const Register = () => {
                                     title: "Successfully Registered and Logged In!!!",
                                     timer: 1500
                                 });
-                                navigate("/");
+                                navigate(`${location.state ? location.state : "/"}`);
                             } else {
                                 setError("User creation failed in DB");
                                 Swal.fire({
@@ -93,7 +94,7 @@ const Register = () => {
                             title: "Successfully Registered and Logged In!!!",
                             timer: 1500
                         });
-                        navigate("/");
+                        navigate(`${location.state ? location.state : "/"}`);
                     } else {
                         // 3. If user does not exist, assign default role (or redirect to role picker page)
                         const newUser = {
@@ -111,7 +112,7 @@ const Register = () => {
                                 title: "Successfully Registered and Logged In!!!",
                                 timer: 1500
                             });
-                            navigate("/");
+                            navigate(`${location.state ? location.state : "/"}`);
                         }
                     }
                 } catch (error) {

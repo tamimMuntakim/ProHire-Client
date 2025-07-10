@@ -3,6 +3,7 @@ import axios from 'axios';
 import { format, parseISO } from 'date-fns';
 import { Link } from 'react-router'; // Assuming react-router-dom for Link
 import { baseURL } from '../Utilities/BaseURL';
+import { HiDocumentMagnifyingGlass } from "react-icons/hi2";
 
 const BrowseJobs = () => {
     const [listings, setListings] = useState([]); // Initialize as an empty array
@@ -228,7 +229,7 @@ const BrowseJobs = () => {
                                                 to={`/see-details/${job?._id}`}
                                                 className="btn btn-xs md:btn-sm bg-secondary dark:bg-primary text-white font-bold mx-auto"
                                             >
-                                                See More
+                                                <HiDocumentMagnifyingGlass size={18}/>
                                             </Link>
                                         </td>
                                     </tr>

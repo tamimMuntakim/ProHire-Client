@@ -11,11 +11,12 @@ const Navbar = () => {
 
     const links =
         <>
-            <li><NavLink to="/" className="rounded-2xl">Home</NavLink></li>
-            <li><NavLink to="/new-job" className="rounded-2xl">New Job/Intern</NavLink></li>
-            <li><NavLink to="/browse-listings" className="rounded-2xl">Browse Listings</NavLink></li>
-            <li><NavLink to="/applied-jobs" className="rounded-2xl">Applied Jobs</NavLink></li>
-            <li><NavLink to="/find-applicants" className="rounded-2xl">Find Applicants</NavLink></li>
+            <li><NavLink to="/" className="rounded-2xl navbar-navs">Home</NavLink></li>
+            {/* <li><NavLink to="/browse-listings" className="rounded-2xl navbar-navs">Browse Listings</NavLink></li> */}
+            <li><NavLink to="/dashboard" className="rounded-2xl navbar-navs">Dashboard</NavLink></li>
+            {/* <li><NavLink to="/new-job" className="rounded-2xl navbar-navs">New Job/Intern</NavLink></li>
+            <li><NavLink to="/applied-jobs" className="rounded-2xl navbar-navs">Applied Jobs</NavLink></li>
+            <li><NavLink to="/find-applicants" className="rounded-2xl navbar-navs">Find Applicants</NavLink></li> */}
         </>;
 
     const handleLogout = () => {
